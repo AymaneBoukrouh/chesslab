@@ -4,6 +4,7 @@ from PyQt6.QtCore import QRect
 from PyQt6.QtWidgets import QFrame
 
 from app.config import Config
+from app.schemas import Cell
 
 if TYPE_CHECKING:
     from .board import Board
@@ -22,12 +23,10 @@ class Square(QFrame):
     def _set_cell(self, x: int, y: int):
         """configures square properties"""
 
-        self.file = chr(ord("a") + x)  # vertical columns, labeled a through h
-        self.rank = (
-            8 - y
-        )  # horizontal rows, numbered 1 through 8, starting from white (bottom)
-        self.cell = f"{self.file}{self.rank}"  # cell name, e.g. a1, b3, h4, etc.
-        self.setObjectName(self.cell)
+        self.file = chr(ord("a") + x)  # vertical columns (a-h)
+        self.rank = 8 - y  # horizontal rows (1-8)
+        self.cell = Cell.from_notation(f"{self.file}{self.rank}")
+        self.setObjectName(self.cell.notation)
 
     def _set_color(self, x: int, y: int):
         """configures square color based on position"""
